@@ -3,13 +3,14 @@ import React from 'react';
 import { Title } from './title';
 import { Button } from '../ui';
 import { Plus } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface ProductCardProps {
   id: number;
   name: string;
   price: number;
   imageUrl: string;
-  //   ingredients: Ingredient[];
+  // ingredients: Ingredient[];
   className?: string;
 }
 
@@ -22,7 +23,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   className,
 }) => {
   return (
-    <div className={className}>
+    <div className={cn('w-[285px]', className)}>
+      {/* <div className={className}> */}
       <Link href={`/product/${id}`}>
         <div className="flex justify-center p-6 bg-secondary rounded-lg h-[260px]">
           <img className="w-[215px] h-[215px]" src={imageUrl} alt={name} />
