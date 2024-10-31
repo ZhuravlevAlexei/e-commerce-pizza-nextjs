@@ -5,7 +5,7 @@ import {
   Title,
   TopBar,
 } from '@/components/shared';
-import { prisma } from '../../prisma/prisma-client';
+import { prisma } from '@/prisma-setup/prisma-client';
 
 export default async function Home() {
   const categories = await prisma.category.findMany({
