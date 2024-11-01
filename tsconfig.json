@@ -20,7 +20,8 @@
     // "baseUrl": "./src",
     "paths": {
       "@/*": ["./src/*"],
-      "@/prisma-setup/*": ["./prisma/*"]
+      "@/prisma-setup/*": ["./prisma/*"],
+      "@/types-setup/*": ["./@types/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
