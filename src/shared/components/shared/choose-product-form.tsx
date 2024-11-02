@@ -38,7 +38,7 @@ export const ChooseProductForm: React.FC<ChooseProductForm> = ({
           // onClick={handleClickAdd}
           className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
         >
-          Добавить в корзину за {totalPrice} ₽
+          Добавить в корзину за {totalPrice} ₴
         </Button>
       </div>
     </div>
