@@ -13,6 +13,7 @@ interface FiltersProps {
 
 export const Filters: React.FC<FiltersProps> = ({ className }) => {
   const { ingredients, loading } = useIngredients();
+
   const filters = useFilters();
 
   useQueryFilters(filters);
@@ -72,7 +73,6 @@ export const Filters: React.FC<FiltersProps> = ({ className }) => {
             onChange={e =>
               filters.setPrices('priceFrom', Number(e.target.value))
             }
-            // defaultValue={0}
           />
           <Input
             type="number"
@@ -108,85 +108,85 @@ export const Filters: React.FC<FiltersProps> = ({ className }) => {
         loading={loading}
         onClickCheckbox={filters.setSelectedIngredients}
         selected={filters.selectedIngredients}
-
-        //dafault data for testing
-        // defaultItems={[
-        //   {
-        //     text: 'Сырный соус',
-        //     value: '1',
-        //   },
-        //   {
-        //     text: 'Моццарелла',
-        //     value: '2',
-        //   },
-        //   {
-        //     text: 'Чеснок',
-        //     value: '3',
-        //   },
-        //   {
-        //     text: 'Солённые огурчики',
-        //     value: '4',
-        //   },
-        //   {
-        //     text: 'Красный лук',
-        //     value: '5',
-        //   },
-        //   {
-        //     text: 'Томаты',
-        //     value: '6',
-        //   },
-        // ]}
-        // items={[
-        //   {
-        //     text: 'Сырный соус',
-        //     value: '1',
-        //   },
-        //   {
-        //     text: 'Моццарелла',
-        //     value: '2',
-        //   },
-        //   {
-        //     text: 'Чеснок',
-        //     value: '3',
-        //   },
-        //   {
-        //     text: 'Солённые огурчики',
-        //     value: '4',
-        //   },
-        //   {
-        //     text: 'Красный лук',
-        //     value: '5',
-        //   },
-        //   {
-        //     text: 'Томаты',
-        //     value: '6',
-        //   },
-        //   {
-        //     text: 'Сырный соус',
-        //     value: '1',
-        //   },
-        //   {
-        //     text: 'Моццарелла',
-        //     value: '2',
-        //   },
-        //   {
-        //     text: 'Чеснок',
-        //     value: '3',
-        //   },
-        //   {
-        //     text: 'Солённые огурчики',
-        //     value: '4',
-        //   },
-        //   {
-        //     text: 'Красный лук',
-        //     value: '5',
-        //   },
-        //   {
-        //     text: 'Томаты',
-        //     value: '6',
-        //   },
-        // ]}
       />
     </div>
   );
 };
+
+//default data for testing
+// defaultItems={[
+//   {
+//     text: 'Сырный соус',
+//     value: '1',
+//   },
+//   {
+//     text: 'Моццарелла',
+//     value: '2',
+//   },
+//   {
+//     text: 'Чеснок',
+//     value: '3',
+//   },
+//   {
+//     text: 'Солённые огурчики',
+//     value: '4',
+//   },
+//   {
+//     text: 'Красный лук',
+//     value: '5',
+//   },
+//   {
+//     text: 'Томаты',
+//     value: '6',
+//   },
+// ]}
+// items={[
+//   {
+//     text: 'Сырный соус',
+//     value: '1',
+//   },
+//   {
+//     text: 'Моццарелла',
+//     value: '2',
+//   },
+//   {
+//     text: 'Чеснок',
+//     value: '3',
+//   },
+//   {
+//     text: 'Солённые огурчики',
+//     value: '4',
+//   },
+//   {
+//     text: 'Красный лук',
+//     value: '5',
+//   },
+//   {
+//     text: 'Томаты',
+//     value: '6',
+//   },
+//   {
+//     text: 'Сырный соус',
+//     value: '1',
+//   },
+//   {
+//     text: 'Моццарелла',
+//     value: '2',
+//   },
+//   {
+//     text: 'Чеснок',
+//     value: '3',
+//   },
+//   {
+//     text: 'Солённые огурчики',
+//     value: '4',
+//   },
+//   {
+//     text: 'Красный лук',
+//     value: '5',
+//   },
+//   {
+//     text: 'Томаты',
+//     value: '6',
+//   },
+// ]}

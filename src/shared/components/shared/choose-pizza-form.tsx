@@ -12,7 +12,6 @@ import {
 } from '@/shared/constants/pizza';
 import { Ingredient } from '@prisma/client';
 import { IngredientItem } from './ingredient-item';
-import { on } from 'events';
 
 interface ChoosePizzaForm {
   imageUrl: string;
@@ -28,7 +27,7 @@ interface ChoosePizzaForm {
 
 export const ChoosePizzaForm: React.FC<ChoosePizzaForm> = ({
   name,
-  // items,
+  items,
   imageUrl,
   ingredients,
   onClickAdd,
@@ -39,8 +38,6 @@ export const ChoosePizzaForm: React.FC<ChoosePizzaForm> = ({
 
   const textDetails = '30 см, традиционное тесто 30';
   const totalPrice = 350;
-  // TODO: add items
-  // FIXME:
 
   return (
     <div className={cn(className, 'flex flex-1')}>

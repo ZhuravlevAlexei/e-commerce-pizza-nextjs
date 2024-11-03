@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         mode: 'insensitive', //does not work with cyrillic on Vercel
       },
     },
-    // take: 5,
+    // take: 5, //tekes first 5 elements
   });
 
   if (products) {

@@ -1,6 +1,6 @@
+import React from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useSet } from 'react-use';
-import React from 'react';
 
 interface PriceProps {
   priceFrom?: number;
@@ -28,7 +28,6 @@ interface ReturnProps extends Filters {
 }
 
 export const useFilters = (): ReturnProps => {
-  //   const router = useRouter();
   const searchParams = useSearchParams() as unknown as Map<
     keyof QueryFilters,
     string
