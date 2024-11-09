@@ -1,5 +1,5 @@
+import React from 'react';
 import type { Metadata } from 'next';
-
 import { Header } from '@/shared/components/shared/header';
 
 export const metadata: Metadata = {
