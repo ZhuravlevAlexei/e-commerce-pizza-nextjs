@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import {
   Sheet,
   // SheetClose,
@@ -30,16 +31,53 @@ export const CartDrawer: React.FC<React.PropsWithChildren<CartDrawerProps>> = ({
 }) => {
   //!! на память об ошибке с массивом!!
   // const [totalAmount, items, fetchCartItems] = useCartStore(state => [state.totalAmount, state.items, state.fetchCartItems]); //валит проект! но у автора так работало!!
-  // вот так можно
+  // а вот так можно
   // const totalAmount = useCartStore(state => state.totalAmount);
   // const items = useCartStore(state => state.items);
   // const fetchCartItems = useCartStore(state => state.fetchCartItems);
-  //вот так правильно
-  const { totalAmount, items, fetchCartItems } = useCartStore();
+  //вот так работает
+  // const { totalAmount, items, fetchCartItems, updateItemQuantity } =
+  //   useCartStore();
+  //еще правильнее
+  // const { totalAmount, items, fetchCartItems, updateItemQuantity } =
+  //   useCartStore(
+  //     useShallow(state => ({
+  //       totalAmount: state.totalAmount,
+  //       items: state.items,
+  //       fetchCartItems: state.fetchCartItems,
+  //       updateItemQuantity: state.updateItemQuantity,
+  //     }))
+  //   );
+  //и даже массивом, но только с useShallow!!
+  const [
+    totalAmount,
+    items,
+    fetchCartItems,
+    updateItemQuantity,
+    removeCartItem,
+  ] = useCartStore(
+    useShallow(state => [
+      state.totalAmount,
+      state.items,
+      state.fetchCartItems,
+      state.updateItemQuantity,
+      state.removeCartItem,
+    ])
+  );
 
   React.useEffect(() => {
     fetchCartItems();
   }, []);
+
+  const onClickCountButton = (
+    id: number,
+    quantity: number,
+    type: 'plus' | 'minus'
+  ) => {
+    // console.log(id, quantity, type);
+    const newQuantity = type === 'plus' ? quantity + 1 : quantity - 1;
+    updateItemQuantity(id, newQuantity);
+  };
 
   return (
     <Sheet>
@@ -73,6 +111,12 @@ export const CartDrawer: React.FC<React.PropsWithChildren<CartDrawerProps>> = ({
                 name={item.name}
                 price={item.price}
                 quantity={item.quantity}
+                onClickCountButton={type =>
+                  onClickCountButton(item.id, item.quantity, type)
+                }
+                onClickRemove={() => {
+                  removeCartItem(item.id);
+                }}
               />
             ))}
           </div>

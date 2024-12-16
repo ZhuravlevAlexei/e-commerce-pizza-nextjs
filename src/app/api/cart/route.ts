@@ -35,3 +35,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Error fetching cart' }, { status: 500 });
   }
 }
+
+export async function POST(req: NextRequest) {
+  try {
+    const token = req.cookies.get('cartToken')?.value;
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { error: 'Не удалось создать корзину' },
+      { status: 500 }
+    );
+  }
+}
