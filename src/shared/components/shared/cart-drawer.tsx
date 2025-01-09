@@ -26,7 +26,7 @@ interface CartDrawerProps {
 }
 
 export const CartDrawer: React.FC<React.PropsWithChildren<CartDrawerProps>> = ({
-  className,
+  // className,
   children,
 }) => {
   //!! на память об ошибке с массивом!!
@@ -93,8 +93,8 @@ export const CartDrawer: React.FC<React.PropsWithChildren<CartDrawerProps>> = ({
         </SheetHeader>
 
         <div className="-mx-6 mt-5 overflow-auto flex-1">
-          <div className="mb-2">
-            {items.map(item => (
+          {items.map(item => (
+            <div key={item.id} className="mb-2">
               <CartDrawerItem
                 key={item.id}
                 id={item.id}
@@ -118,8 +118,8 @@ export const CartDrawer: React.FC<React.PropsWithChildren<CartDrawerProps>> = ({
                   removeCartItem(item.id);
                 }}
               />
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
 
         <SheetFooter className="-mx-6 bg-white p-8">

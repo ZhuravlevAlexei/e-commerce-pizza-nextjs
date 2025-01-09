@@ -1,5 +1,8 @@
-import { prisma } from '@/prisma-setup/prisma-client';
+import crypto from 'crypto';
 import { NextResponse, NextRequest } from 'next/server';
+import { prisma } from '@/prisma-setup/prisma-client';
+import { findOrCreateCart, updateCartTotalAmount } from '@/shared/lib';
+import { CreateCartItemValues } from '@/shared/services/dto/cart.dto';
 
 export async function GET(req: NextRequest) {
   try {
@@ -31,16 +34,60 @@ export async function GET(req: NextRequest) {
     });
     return NextResponse.json(userCart);
   } catch (error) {
-    console.error('Error fetching cart:', error);
-    return NextResponse.json({ error: 'Error fetching cart' }, { status: 500 });
+    console.log('[CART_GET] Server error', error);
+    return NextResponse.json(
+      { message: 'Не удалось получить корзину' },
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const token = req.cookies.get('cartToken')?.value;
+    let token = req.cookies.get('cartToken')?.value;
+
+    if (!token) {
+      token = crypto.randomUUID();
+    }
+
+    const userCart = await findOrCreateCart(token);
+
+    const data = (await req.json()) as CreateCartItemValues;
+
+    const findCartItem = await prisma.cartItem.findFirst({
+      where: {
+        cartId: userCart.id,
+        productItemId: data.productItemId,
+        ingredients: { every: { id: { in: data.ingredients } } },
+      },
+    });
+
+    //Если товар был найден, делаем +1
+    if (findCartItem) {
+      await prisma.cartItem.update({
+        where: { id: findCartItem.id },
+        data: { quantity: findCartItem.quantity + 1 },
+      });
+    } else {
+      //Если товар не был найден, создаем новый
+      await prisma.cartItem.create({
+        data: {
+          cartId: userCart.id,
+          productItemId: data.productItemId,
+          quantity: 1,
+          ingredients: {
+            connect: data.ingredients?.map(id => ({ id })),
+          },
+        },
+      });
+    }
+
+    const updatedUserCart = await updateCartTotalAmount(token);
+    const resp = NextResponse.json(updatedUserCart);
+    resp.cookies.set('cartToken', token);
+    return resp;
   } catch (error) {
-    console.log(error);
+    console.log('[CART_POST] Server error', error);
     return NextResponse.json(
       { error: 'Не удалось создать корзину' },
       { status: 500 }

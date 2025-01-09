@@ -14,18 +14,21 @@ import { usePizzaOptions } from '@/shared/hooks';
 interface ChoosePizzaForm {
   imageUrl: string;
   name: string;
-  className?: string;
   ingredients: Ingredient[];
   items: ProductItem[];
-  onClickAddCart?: VoidFunction;
+  loading?: boolean;
+  onSubmit: (itemId: number, ingredients: number[]) => void;
+  className?: string;
 }
 
+//Форма выбора ПИЦЦЫ
 export const ChoosePizzaForm: React.FC<ChoosePizzaForm> = ({
-  name,
-  items,
   imageUrl,
+  name,
   ingredients,
-  onClickAddCart,
+  items,
+  loading,
+  onSubmit,
   className,
 }) => {
   const {
@@ -33,6 +36,7 @@ export const ChoosePizzaForm: React.FC<ChoosePizzaForm> = ({
     type,
     selectedIngredients,
     availableSizes,
+    currentItemId,
     setSize,
     setType,
     addIngredient,
@@ -47,15 +51,10 @@ export const ChoosePizzaForm: React.FC<ChoosePizzaForm> = ({
   );
 
   const handleClickAdd = () => {
-    onClickAddCart?.();
-    console.log({
-      size,
-      type,
-      ingredients: selectedIngredients,
-    });
+    if (currentItemId) {
+      onSubmit(currentItemId, Array.from(selectedIngredients));
+    }
   };
-
-  // console.log(items, availablePizzas, availablePizzaSizes);
 
   return (
     <div className={cn(className, 'flex flex-1')}>
@@ -96,7 +95,7 @@ export const ChoosePizzaForm: React.FC<ChoosePizzaForm> = ({
         </div>
 
         <Button
-          // loading={loading}
+          loading={loading}
           onClick={handleClickAdd}
           className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
         >
