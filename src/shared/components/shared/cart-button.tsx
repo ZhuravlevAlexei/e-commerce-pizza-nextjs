@@ -20,16 +20,12 @@ export const CartButton: React.FC<CartButtonProps> = ({ className }) => {
     <CartDrawer>
       <Button
         loading={loading}
-        className={cn(
-          'group relative w-[129px]',
-          { 'w-[129px]': loading },
-          className
-        )}
         // className={cn(
-        //   'group relative',
-        //   { 'w-[105px]': loading },
+        //   'group relative w-[129px]',
+        //   { 'w-[129px]': loading },
         //   className
-        // )}
+        // )} //кнопка фиксированных размеров, не скачет в зависимости от свойства loading
+        className={cn('group relative', { 'w-[105px]': loading }, className)}
       >
         {/* <b>{totalAmount} ₴</b> */}
         <b>{totalAmount ? `${totalAmount} ₴` : ''}</b>
