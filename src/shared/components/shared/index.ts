@@ -8,6 +8,7 @@ export { ChooseProductForm } from './choose-product-form';
 export { Container } from './container';
 export { Filters } from './filters';
 export { FilterCheckbox } from './filter-checkbox';
+export { ProductForm } from './product-form';
 export { GroupVariants } from './group-variants';
 export { Header } from './header';
 export { IngredientItem } from './ingredient-item';

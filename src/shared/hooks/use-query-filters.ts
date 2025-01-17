@@ -19,5 +19,5 @@ export const useQueryFilters = (filters: Filters) => {
 
     //and set it in url
     router.push(`?${query}`, { scroll: false });
-  }, [filters, router]);
+  }, [filters]);
 };

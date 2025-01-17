@@ -58,7 +58,13 @@ export async function POST(req: NextRequest) {
       where: {
         cartId: userCart.id,
         productItemId: data.productItemId,
-        ingredients: { every: { id: { in: data.ingredients } } },
+        ingredients: {
+          every: { id: { in: data.ingredients } },
+          //some: {}, // это серьезно - эксперименты автора 15:20:00 -
+          // есть глюк (он тут не исправлен): при добавлении пиццы без ингредиентов,
+          // а потом такой же, но с ингредиентами - она не добавляется,
+          // а плюсуется на пиццу без ингредиентов!
+        },
       },
     });
 
