@@ -4,7 +4,7 @@ import { Header } from '@/shared/components/shared/header';
 
 export const metadata: Metadata = {
   title: 'Pizza Shop',
-  description: 'Pet project - best pizza in the world',
+  description: 'Pizza Shop Pet Project - best pizza in the world',
 };
 
 export default function HomeLayout({
