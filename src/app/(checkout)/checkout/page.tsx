@@ -1,23 +1,59 @@
 'use client';
 
-import { ArrowRight, Package, Percent, Truck } from 'lucide-react';
+import toast from 'react-hot-toast';
+import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  CheckoutItem,
-  CheckoutItemDetails,
+  CheckoutAddressForm,
+  CheckoutCart,
+  CheckoutPersonalForm,
+  CheckoutSidebar,
   Container,
   Title,
-  WhiteBlock,
 } from '@/shared/components/shared';
-import { Button, Input, Textarea } from '@/shared/components/ui';
 import { useCart } from '@/shared/hooks';
-import { getCartItemDetails } from '@/shared/lib';
-import { PizzaSize, PizzaType } from '@/shared/constants/pizza';
-
-const VAT = 15;
-const DELIVERY_PRICE = 250;
+import { checkoutFormSchema, CheckoutFormValues } from '@/shared/constants';
+import { createOrder } from '@/app/actions';
 
 export default function CheckoutPage() {
-  const { totalAmount, updateItemQuantity, items, removeCartItem } = useCart();
+  const [submitting, setSubmitting] = React.useState(false);
+  const { totalAmount, updateItemQuantity, items, removeCartItem, loading } =
+    useCart();
+
+  const form = useForm<CheckoutFormValues>({
+    resolver: zodResolver(checkoutFormSchema),
+
+    defaultValues: {
+      email: '',
+      firstName: '',
+      lastName: '',
+      phone: '',
+      address: '',
+      comment: '',
+    },
+  });
+
+  const onSubmit = async (data: CheckoutFormValues) => {
+    try {
+      setSubmitting(true);
+      const url = await createOrder(data);
+
+      toast.success('Заказ успешно оформлен! 📝 Переход на оплату... ', {
+        icon: '✅',
+      });
+
+      if (url) {
+        location.href = url;
+      }
+    } catch (err) {
+      setSubmitting(false);
+      console.log(err);
+      toast.error('Не удалось создать заказ', {
+        icon: '❌',
+      });
+    }
+  };
 
   const onClickCountButton = (
     id: number,
@@ -30,118 +66,41 @@ export default function CheckoutPage() {
     updateItemQuantity(id, newQuantity);
   };
 
-  const vatPrice = (totalAmount * VAT) / 100;
-  const totalPrice = totalAmount + DELIVERY_PRICE + vatPrice;
-
   return (
     <Container className="mt-10">
       <Title
         text="Оформление заказа"
         className="font-extrabold mb-8 text-[36px]"
       />
-      <div className="flex gap-10">
-        {/* Левая часть */}
-        <div className="flex flex-col gap-10 flex-1 mb-20">
-          <WhiteBlock title="1. Корзина">
-            <div className="flex flex-col gap-5">
-              {items.map(item => (
-                <CheckoutItem
-                  key={item.id}
-                  id={item.id}
-                  name={item.name}
-                  imageUrl={item.imageUrl}
-                  details={getCartItemDetails(
-                    item.ingredients,
-                    item.pizzaType as PizzaType,
-                    item.pizzaSize as PizzaSize
-                  )}
-                  price={item.price}
-                  quantity={item.quantity}
-                  disabled={item.disabled}
-                  onClickCountButton={type =>
-                    onClickCountButton(item.id, item.quantity, type)
-                  }
-                  onClickRemove={() => {
-                    removeCartItem(item.id);
-                  }}
-                />
-              ))}
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="flex gap-10">
+            {/* Левая часть */}
+            <div className="flex flex-col gap-10 flex-1 mb-20">
+              <CheckoutCart
+                items={items}
+                onClickCountButton={onClickCountButton}
+                removeCartItem={removeCartItem}
+                loading={loading}
+              />
+              <CheckoutPersonalForm
+                className={loading ? 'opacity-40 pointer-events-none' : ''}
+              />
+              <CheckoutAddressForm
+                className={loading ? 'opacity-40 pointer-events-none' : ''}
+              />
             </div>
-          </WhiteBlock>
 
-          <WhiteBlock title="2. Персональные данные">
-            <div className="grid grid-cols-2 gap-5">
-              <Input name="firstName" className="text-base" placeholder="Имя" />
-              <Input
-                name="lastName"
-                className="text-base"
-                placeholder="Фамилия"
-              />
-              <Input name="email" className="text-base" placeholder="E-Mail" />
-              <Input name="phone" className="text-base" placeholder="Телефон" />
-            </div>
-          </WhiteBlock>
-          <WhiteBlock title="3. Адрес доставки">
-            <div className="flex flex-col gap-5">
-              <Input
-                name="firstName"
-                className="text-base"
-                placeholder="Введите адрес..."
-              />
-              <Textarea
-                className="text-base"
-                placeholder="Комментарий к заказу"
-                rows={5}
+            {/* Правая часть */}
+            <div className="w-[450px]">
+              <CheckoutSidebar
+                totalAmount={totalAmount}
+                loading={loading || submitting}
               />
             </div>
-          </WhiteBlock>
-        </div>
-        {/* Правая часть */}
-        <div className="w-[450px]">
-          <WhiteBlock className="p-6 sticky top-4">
-            <div className="flex flex-col gap-1">
-              <span className="text-xl">Итого:</span>
-              <span className="text-[34px] font-extrabold">{totalPrice} ₴</span>
-            </div>
-            <CheckoutItemDetails
-              title={
-                <div className="flex items-center">
-                  <Package size={18} className="mr-2 text-gray-400" />
-                  Стоимость корзины:
-                </div>
-              }
-              value={`${totalAmount} ₴`}
-            />
-            <CheckoutItemDetails
-              title={
-                <div className="flex items-center">
-                  <Percent size={18} className="mr-2 text-gray-400" />
-                  Налоги (условно 15%):
-                </div>
-              }
-              value={`${vatPrice} ₴`}
-            />
-            <CheckoutItemDetails
-              title={
-                <div className="flex items-center">
-                  <Truck size={18} className="mr-2 text-gray-400" />
-                  Доставка (условно фикс.):
-                </div>
-              }
-              value={`${DELIVERY_PRICE} ₴`}
-            />
-
-            <Button
-              // loading={loading}
-              type="submit"
-              className="w-full h-14 rounded-2xl mt-6 text-base font-bold"
-            >
-              Перейти к оплате
-              <ArrowRight className="w-5 ml-2" />
-            </Button>
-          </WhiteBlock>
-        </div>
-      </div>
+          </div>
+        </form>
+      </FormProvider>
     </Container>
   );
 }
