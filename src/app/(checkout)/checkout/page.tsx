@@ -5,9 +5,9 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  CheckoutAddressForm,
-  CheckoutCart,
-  CheckoutPersonalForm,
+  // CheckoutAddressForm, //см. ошибку из-за FormProvider, нельзя импортировать заранее в общем импорте
+  // CheckoutCart,
+  // CheckoutPersonalForm,
   CheckoutSidebar,
   Container,
   Title,
@@ -15,6 +15,11 @@ import {
 import { useCart } from '@/shared/hooks';
 import { checkoutFormSchema, CheckoutFormValues } from '@/shared/constants';
 import { createOrder } from '@/app/actions';
+import {
+  CheckoutAddressForm,
+  CheckoutCart,
+  CheckoutPersonalForm,
+} from '@/shared/components/shared/checkout';
 
 export default function CheckoutPage() {
   const [submitting, setSubmitting] = React.useState(false);

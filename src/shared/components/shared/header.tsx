@@ -11,6 +11,7 @@ import { SearchInput } from './search-input';
 import { CartButton } from './cart-button';
 import { cn } from '@/shared/lib/utils';
 import toast from 'react-hot-toast';
+// import { useSession } from 'next-auth/react';
 
 interface HeaderProps {
   hasSearch?: boolean;
@@ -23,9 +24,13 @@ export const Header: React.FC<HeaderProps> = ({
   hasCart = true,
   className,
 }) => {
+  // const { data: session } = useSession();
   const searchParams = useSearchParams();
+
+  // console.log(session, 999);
+
   React.useEffect(() => {
-    console.log(searchParams.has('paid'), searchParams);
+    // console.log(searchParams.has('paid'), searchParams);
     if (searchParams.has('paid')) {
       setTimeout(() => {
         //без таймаута тостер не отрабатывает, подумать, возможно ему нужна пауза?

@@ -1,6 +1,3 @@
-export * from './modals';
-export * from './form';
-export * from './checkout';
 export { CartButton } from './cart-button';
 export { CartDrawer } from './cart-drawer';
 export { Categories } from './categories';
@@ -30,3 +27,6 @@ export { SortPopup } from './sort-popup';
 export { Title } from './title';
 export { TopBar } from './top-bar';
 export { WhiteBlock } from './white-block';
+export * from './modals';
+// export * from './form';
+// export * from './checkout';
