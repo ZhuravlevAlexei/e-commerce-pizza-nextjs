@@ -1,4 +1,7 @@
-'use client';
+'use client'; // внимание, проверить закоментированные общие импорты
+// этого компонента, кажtтся проблема была в том, что
+//  не было 'use client' нельзя же было пользоваться контекстом на
+//  сервере. так что Controller, useFormContext не могли работать
 
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -12,7 +15,13 @@ interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   required?: boolean;
 }
 
-export const FormTextarea: React.FC<Props> = ({ className, name, label, required, ...props }) => {
+export const FormTextarea: React.FC<Props> = ({
+  className,
+  name,
+  label,
+  required,
+  ...props
+}) => {
   const {
     register,
     formState: { errors },

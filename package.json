@@ -9,7 +9,8 @@
     "lint": "next lint",
     "prisma:push": "prisma db push",
     "prisma:studio": "prisma studio",
-    "prisma:seed": "prisma db seed"
+    "prisma:seed": "prisma db seed",
+    "postinstall": "prisma generate"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -43,6 +44,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.54.2",
     "react-hot-toast": "^2.5.1",
+    "react-insta-stories": "^2.8.0",
     "react-use": "^17.5.1",
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",

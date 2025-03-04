@@ -1,3 +1,8 @@
+'use client'; // внимание, проверить закоментированные общие импорты
+// этого компонента, кажtтся проблема была в том, что
+//  не было 'use client' нельзя же было пользоваться контекстом на
+//  сервере. так что Controller, useFormContext не могли работать
+
 import { useFormContext } from 'react-hook-form';
 import { Input } from '../../ui';
 import { ClearButton } from '../clear-button';

@@ -11,7 +11,7 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-// original from Vercel
+// original from Vercel 
 // datasource db {
 //   provider = "postgresql"
 //   url = env("POSTGRES_PRISMA_URL") // uses connection pooling
@@ -26,7 +26,7 @@ model User {
   email     String    @unique
   password  String 
   role      UserRole  @default(USER)
-  verified DateTime
+  verified DateTime?
 
   provider    String?
   providerId  String?
@@ -167,7 +167,27 @@ model VerificationCode {
     //userId=1,code=3355 - уже есть такое
     //userId=1,code=3355 - в момент создания опять не может быть
 }
- 
+
+model Story {
+    id              Int    @id @default(autoincrement())
+    previewImageUrl String
+
+    items StoryItem[]
+
+    createdAt DateTime @default(now())
+}
+
+model StoryItem {
+    id Int @id @default(autoincrement())
+
+    storyId Int
+    story   Story @relation(fields: [storyId], references: [id])
+
+    sourceUrl String
+
+    createdAt DateTime @default(now())
+}
+  
 
 enum OrderStatus {
   PENDING

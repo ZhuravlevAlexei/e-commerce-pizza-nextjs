@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { Header } from '@/shared/components/shared/header';
 
@@ -16,7 +16,10 @@ export default function HomeLayout({
 }>) {
   return (
     <main className="min-h-screen">
-      <Header />
+      <Suspense>
+        {/* Suspense нужен т.к. внутри хедера пользуемся useSerchParams  */}
+        <Header />
+      </Suspense>
       {children}
       {modal}
     </main>
