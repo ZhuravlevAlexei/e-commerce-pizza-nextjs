@@ -13,7 +13,6 @@ interface CartDrawerItemProps extends CartItemProps {
 }
 
 export const CartDrawerItem: React.FC<CartDrawerItemProps> = ({
-  // id,
   imageUrl,
   details,
   name,
